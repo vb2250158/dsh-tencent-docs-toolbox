@@ -49,6 +49,8 @@ Unavailable balances display an unavailable state, and absent independent allowa
 
 The plugin includes a fixed public snapshot of shared runtime v0.3.0. Its source revision and file hashes are recorded in `runtime/source.json`. Maintainers can reproduce it with `npm run sync-runtime -- <upstream-checkout>`.
 
+`npm run build` generates the shipped Host files and bundles the COS SDK's JavaScript dependencies for DSH compatibility. The original shared snapshot remains verifiable. Build provenance, the adapter hash and dependency licenses are included under `lib`.
+
 Configure the `tencent-docs-toolbox` plugin row in DSH. The embedded page uses the DSH owner connection for access.
 
 | Setting | Default | Purpose |

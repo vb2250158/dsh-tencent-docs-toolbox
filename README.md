@@ -49,6 +49,8 @@ dsh plugin --profile <profile> add "github:vb2250158/dsh-tencent-docs-toolbox#<c
 
 插件包含共享运行库 v0.3.0 的固定公开快照，来源和逐文件哈希保存在 `runtime/source.json`。维护者可运行 `npm run sync-runtime -- <上游仓库路径>` 重建该快照。
 
+`npm run build` 生成随包发布的 Host 产物，并打包 COS SDK 的 JavaScript 依赖以兼容 DSH。原始共享快照保持可核对，构建来源、适配器哈希和依赖许可证保存在 `lib`。
+
 在 DSH 中配置 `tencent-docs-toolbox` 插件行。内嵌页面通过 DSH 的 owner 连接访问。
 
 | 配置 | 默认值 | 用途 |

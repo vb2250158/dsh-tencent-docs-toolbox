@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 — 2026-11-11
+
+- Bundle the COS SDK with its dependency licenses to support DSH's package resolver when the SDK requests the npm `punycode/` module.
+- 构建时打包 COS SDK 并附依赖许可证，兼容 DSH 对 npm `punycode/` 模块的解析。
+
 ## 0.1.1 — 2026-11-11
 
 - Package the shared runtime from its fixed public commit with source hashes and its MIT license so installation follows DSH's registry-only subdependency policy.

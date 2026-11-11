@@ -1,6 +1,6 @@
 {
   "name": "dsh-tencent-docs-toolbox",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Tencent Docs toolbox for DSH with automatic sign-in, persistent sessions and live account limits.",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/vb2250158/dsh-tencent-docs-toolbox.git"
   },
   "exports": {
-    ".": "./src/index.js",
+    ".": "./lib/src/index.js",
     "./client": "./src/client.js",
     "./package.json": "./package.json"
   },
@@ -21,13 +21,14 @@
     "README.en.md",
     "CHANGELOG.md",
     "LICENSE",
-    "runtime"
+    "runtime",
+    "lib"
   ],
   "engines": {
     "node": ">=24.15.0"
   },
   "scripts": {
-    "build": "node scripts/check.mjs",
+    "build": "node scripts/check.mjs && node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",
     "sync-runtime": "node scripts/sync-runtime.mjs"
   },
@@ -67,5 +68,8 @@
     "toolbox",
     "transcription",
     "document-conversion"
-  ]
+  ],
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
 }
