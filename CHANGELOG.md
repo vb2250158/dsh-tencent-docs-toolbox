@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3 — 2026-11-11
+
+- Normalize generated dependency comment and notice whitespace while preserving the shared source snapshot.
+- 规范构建产物中的依赖注释与许可证空白，保留共享源码快照。
+
 ## 0.1.2 — 2026-11-11
 
 - Bundle the COS SDK with its dependency licenses to support DSH's package resolver when the SDK requests the npm `punycode/` module.

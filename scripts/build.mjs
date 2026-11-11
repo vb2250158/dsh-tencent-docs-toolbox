@@ -76,9 +76,16 @@ for (const directory of [...packageRoots].sort()) {
 }
 await writeFile(
   join(output, "runtime/COS-LICENSES.txt"),
-  notices.join("\n\n---\n\n") + "\n",
+  notices.join("\n\n---\n\n").replace(/[\t ]+$/gm, "").trimEnd() + "\n",
 );
-const sdk = await readFile(join(output, "runtime/src/cos-sdk.mjs"));
+const sdkPath = join(output, "runtime/src/cos-sdk.mjs");
+const sdkText = (await readFile(sdkPath, "utf8"))
+  .split("\n")
+  .map(line => /^\s*(?:\*|\/\/)/.test(line) ? line.trimEnd() : line)
+  .join("\n")
+  .replace(/\n+$/, "\n");
+await writeFile(sdkPath, sdkText);
+const sdk = Buffer.from(sdkText);
 const source = JSON.parse(
   await readFile(join(root, "runtime/source.json"), "utf8"),
 );
