@@ -1,0 +1,62 @@
+{
+  "name": "dsh-tencent-docs-toolbox",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Tencent Docs toolbox for DSH with automatic sign-in, persistent sessions and live account limits.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vb2250158/dsh-tencent-docs-toolbox.git"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./client": "./src/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "build": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "tencent-docs-web-proxy": "github:vb2250158/tencent-docs-web-proxy#94659228088fea30b4c2fbca47751763fdff4110"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": ">=3.19.0 <4.0.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-primitives"
+      ]
+    }
+  },
+  "keywords": [
+    "dsh-plugin",
+    "tencent-docs",
+    "toolbox",
+    "transcription",
+    "document-conversion"
+  ]
+}
