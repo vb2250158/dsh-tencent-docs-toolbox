@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { basename } from "node:path";
-import { listToolCatalog } from "tencent-docs-web-proxy/catalog";
+import { listToolCatalog } from "../runtime/src/tool-catalog.mjs";
 
 const output = {
   schema: { type: "object", additionalProperties: true },

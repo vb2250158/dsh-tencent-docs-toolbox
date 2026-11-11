@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 — 2026-11-11
+
+- Package the shared runtime from its fixed public commit with source hashes and its MIT license so installation follows DSH's registry-only subdependency policy.
+- 共享运行库按固定公开提交随插件打包，附来源哈希与 MIT 许可证，符合 DSH 子依赖安装规则。
+
 ## Unreleased
 
 ### 中文

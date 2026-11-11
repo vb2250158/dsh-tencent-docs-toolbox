@@ -1,30 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
-
-let createTools;
-try {
-  ({ createTools } = await import("../src/tools.js"));
-} catch (error) {
-  if (
-    error.code !== "ERR_MODULE_NOT_FOUND" ||
-    !error.message.includes("tencent-docs-web-proxy")
-  )
-    throw error;
-  const source = await readFile(
-    new URL("../src/tools.js", import.meta.url),
-    "utf8",
-  );
-  const root =
-    process.env.TDOCS_SOURCE_ROOT ??
-    resolve(import.meta.dirname, "../../../../tencent-docs-web-proxy");
-  const catalog = pathToFileURL(resolve(root, "src/tool-catalog.mjs")).href;
-  ({ createTools } = await import(
-    `data:text/javascript;base64,${Buffer.from(source.replace("tencent-docs-web-proxy/catalog", catalog)).toString("base64")}`
-  ));
-}
+import { createTools } from "../src/tools.js";
 
 test("native tools expose all catalog actions, forward cancellation and preserve request IDs", async () => {
   const calls = [];

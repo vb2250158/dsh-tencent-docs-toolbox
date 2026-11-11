@@ -1,6 +1,6 @@
 import { request as httpRequest } from "node:http";
-import { createProxyServer } from "tencent-docs-web-proxy/server";
-import { TranscriptionService } from "tencent-docs-web-proxy/transcription";
+import { createProxyServer } from "../runtime/src/server.mjs";
+import { TranscriptionService } from "../runtime/src/service.mjs";
 
 const PREFIX = "/tencent-docs-toolbox";
 const APP = `${PREFIX}/app`;

@@ -2,7 +2,7 @@
 import Schema from "@deepseek-ai/schemastery";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { TencentDocsSessionController } from "tencent-docs-web-proxy/session";
+import { TencentDocsSessionController } from "../runtime/src/session-controller.mjs";
 import { createTools } from "./tools.js";
 import { createPortal } from "./portal.js";
 
