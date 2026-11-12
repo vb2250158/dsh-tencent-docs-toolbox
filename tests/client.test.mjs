@@ -12,11 +12,17 @@ const host = resolve(hostRoot, "packages/client/ui-primitives/package.json");
 const require = createRequire(host);
 const { JSDOM } = require("jsdom");
 const React = require("react");
+const rendererRequire = createRequire(
+  resolve(hostRoot, "packages/client/ui-renderer/package.json"),
+);
+const { useSyncExternalStoreWithSelector } = rendererRequire(
+  "use-sync-external-store/shim/with-selector",
+);
 const { createRoot } = require("react-dom/client");
 const { act } = React;
 const h = React.createElement;
 
-test("automatic login opens once and closes on authenticated status; registrations dispose", async () => {
+test("required selector hooks render login, toolbox and settings across authentication changes", async () => {
   const dom = new JSDOM(
     '<html><head></head><body><div id="root"></div></body></html>',
     { url: "http://localhost/" },
@@ -61,6 +67,8 @@ test("automatic login opens once and closes on authenticated status; registratio
   const plugin = descriptor.factory((name) =>
     name === "react" ? React : primitives,
   );
+  const themeSnapshot = { active: { colorScheme: "light" } };
+  const selectedPanels = [];
   const disposers = [],
     entries = new Map(),
     rpc = {
@@ -91,8 +99,11 @@ test("automatic login opens once and closes on authenticated status; registratio
       if (typeof dispose === "function") disposers.push(dispose);
     },
     configForms: { whileServed: (_names, callback) => callback() },
-    layout: { selectPanel() {}, panelInfo: { getSnapshot: () => ({}) } },
-    theme: { getTheme: () => ({ active: { colorScheme: "light" } }) },
+    layout: {
+      selectPanel: (value) => selectedPanels.push(value),
+      panelInfo: { getSnapshot: () => ({}) },
+    },
+    theme: { getTheme: () => themeSnapshot },
     on: () => () => {},
   });
   assert.deepEqual(
@@ -106,12 +117,20 @@ test("automatic login opens once and closes on authenticated status; registratio
   );
   const overlay = entries.get("shell.overlay");
   const injected = overlay.opts.inject();
-  const useAuth = () =>
-    React.useSyncExternalStore(
-      injected.hooks.auth.subscribe,
-      injected.hooks.auth.getSnapshot,
-      injected.hooks.auth.getSnapshot,
-    );
+  // DSH selector hooks require a selector even when reading the whole snapshot.
+  const selectorHook = (source) => {
+    const subscribe = (listener) => source.subscribe(listener);
+    const getSnapshot = () => source.getSnapshot();
+    return (selector) =>
+      useSyncExternalStoreWithSelector(
+        subscribe,
+        getSnapshot,
+        undefined,
+        selector,
+      );
+  };
+  const useAuth = selectorHook(injected.hooks.auth);
+  const useTheme = selectorHook(injected.hooks.theme);
   const root = createRoot(dom.window.document.getElementById("root"));
   try {
     await act(async () => {
@@ -125,6 +144,45 @@ test("automatic login opens once and closes on authenticated status; registratio
       await injected.hooks.auth.refresh();
     });
     assert.equal(dom.window.document.querySelector("[role=dialog]"), null);
+    assert.equal(calls, 1);
+
+    const main = entries.get("main");
+    const configuration = entries.get("plugins.bundle.config");
+    const props = { ...injected, useAuth, useTheme };
+    state = { ...state, state: "login-required", authenticated: false };
+    await act(async () => {
+      await injected.hooks.auth.refresh();
+      root.render(h(main.component, props));
+    });
+    assert.equal(dom.window.document.querySelector("iframe"), null);
+    assert.equal(
+      dom.window.document.querySelector("[data-tdocs-login-state]").dataset
+        .tdocsLoginState,
+      "login-required",
+    );
+    await act(async () => root.render(h(configuration.component, props)));
+    assert.equal(
+      dom.window.document.querySelector("[data-tdocs-login-state]").dataset
+        .tdocsLoginState,
+      "login-required",
+    );
+
+    state = { ...state, state: "ready", authenticated: true };
+    await act(async () => {
+      await injected.hooks.auth.refresh();
+    });
+    const openButton = dom.window.document.querySelector("button");
+    assert.equal(openButton.textContent, "open");
+    await act(async () => openButton.click());
+    assert.equal(selectedPanels.at(-1), "tencent-docs-toolbox");
+    await act(async () => root.render(h(main.component, props)));
+    assert.equal(
+      dom.window.document.querySelector("iframe").getAttribute("src"),
+      "/tencent-docs-toolbox/app/",
+    );
+    assert.equal(dom.window.document.querySelector("h2").textContent, "title");
+    await act(async () => dom.window.document.querySelector("button").click());
+    assert.equal(selectedPanels.at(-1), null);
     assert.equal(calls, 1);
   } finally {
     await act(async () => root.unmount());

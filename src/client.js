@@ -174,7 +174,7 @@ window.__ModuleLoader__.load({
     }
 
     function AutoLogin({ useAuth, login, retry, t }) {
-      const auth = useAuth();
+      const auth = useAuth((value) => value);
       const attempted = React.useRef(null);
       const dismissed = React.useRef(null);
       const [open, setOpen] = React.useState(false);
@@ -212,7 +212,7 @@ window.__ModuleLoader__.load({
     }
 
     function ToolboxPage({ useAuth, useTheme, login, retry, back, t }) {
-      const auth = useAuth();
+      const auth = useAuth((value) => value);
       const colorScheme = useTheme((value) => value.active.colorScheme);
       const frame = React.useRef(null);
       const syncTheme = React.useCallback(() => {
@@ -270,7 +270,7 @@ window.__ModuleLoader__.load({
     }
 
     function Configuration({ useAuth, login, retry, open, t }) {
-      const auth = useAuth();
+      const auth = useAuth((value) => value);
       return h(
         "div",
         { className: "tdocs-configuration" },

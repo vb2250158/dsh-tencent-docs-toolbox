@@ -60,6 +60,8 @@ dsh plugin --profile <profile> add "github:vb2250158/dsh-tencent-docs-toolbox#<c
 
 并发调用共用一个登录窗口，取消单个工具等待只结束该调用的等待。登录续期复用当前工具服务和任务记录。卸载插件会撤销工具、页面及路由注册，关闭私有后端和登录窗口，并等待已接收任务收尾。历史文件、会话及任务记录保存在私有运行目录，由该目录统一管理。
 
+维护者可设置 `DSH_TEST_WORKSPACE` 为受测 DSH 源码目录后运行 `npm test`。界面回归使用该宿主的 React 和 selector Hook 协议，覆盖登录弹窗、工具面板与设置页。
+
 ## 许可证
 
 MIT。腾讯文档及相关商标归各自权利人所有。[许可证](LICENSE)

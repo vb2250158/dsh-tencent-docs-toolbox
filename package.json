@@ -1,6 +1,6 @@
 {
   "name": "dsh-tencent-docs-toolbox",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "Tencent Docs toolbox for DSH with automatic sign-in, persistent sessions and live account limits.",
   "license": "MIT",

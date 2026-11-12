@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4 — 2026-11-12
+
+- Fix blank toolbox, sign-in and settings panels by passing the selector required by DSH state hooks.
+- 按 DSH 状态 Hook 的要求传入选择函数，修复工具箱、登录弹窗与设置页白屏。
+- Cover the real selector calling convention and all three affected panels in React rendering regressions.
+- React 回归测试覆盖实际选择函数调用方式与三个受影响界面。
+
 ## 0.1.3 — 2026-11-11
 
 - Normalize generated dependency comment and notice whitespace while preserving the shared source snapshot.

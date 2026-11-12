@@ -60,6 +60,8 @@ Configure the `tencent-docs-toolbox` plugin row in DSH. The embedded page uses t
 
 Concurrent calls share one sign-in window. Cancelling one tool wait ends that caller's wait. Session renewal reuses the current toolbox service and job records. Unloading the plugin removes its tool, page, and route registrations, closes the private backend and login window, and drains accepted jobs. Historical files, sessions, and job records are managed in the private runtime directory.
 
+Maintainers can set `DSH_TEST_WORKSPACE` to the tested DSH source checkout and run `npm test`. UI regressions use that Host’s React and selector Hook convention to cover the sign-in overlay, toolbox and settings panels.
+
 ## License
 
 MIT. Tencent Docs and related trademarks belong to their respective owners. [License](LICENSE)
